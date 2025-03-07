@@ -4,15 +4,15 @@ import { ScrollProgress } from '@components/misc';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '@utils/index';
 
-const posts = await getCollection('ship');
-
 export async function getStaticPaths() {
+  const posts = await getCollection('ship'); // Move it inside the function
   return posts.map((post) => ({
     params: { slug: post.slug },
   }));
 }
 
 const { slug } = Astro.params;
+const posts = await getCollection('ship'); // Call it again here
 const post = posts.find((page) => page.slug === slug);
 
 if (!post) return Astro.redirect('/404');
