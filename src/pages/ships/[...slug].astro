@@ -1,3 +1,12 @@
+--- 
+export async function getStaticPaths() {
+  return [
+    { params: { slug: "example-ship" } }, // Replace with actual ship data
+    { params: { slug: "another-ship" } },
+  ];
+}
+---
+
 ---
 import ShipsLayout from '@layouts/ships-layout.astro';
 import { ScrollProgress } from '@components/misc';
