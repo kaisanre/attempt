@@ -1,19 +1,24 @@
 ---
 import ThoughtsLayout from '@layouts/thoughts-layout.astro';
-import { type CollectionEntry, getCollection } from 'astro:content';
 import { ScrollProgress } from '@components/misc';
+import { getCollection } from 'astro:content';
 import { getReadingTime } from '@utils/index';
 
-const posts = await getCollection('thought');
-type Props = CollectionEntry<'thought'>;
+export async function getStaticPaths() {
+  const posts = await getCollection('thought'); // Fetch thoughts collection
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
 
 const { slug } = Astro.params;
+const posts = await getCollection('thought');
 const post = posts.find((page) => page.slug === slug);
 
 if (!post) return Astro.redirect('/404');
 
-const readingTime = getReadingTime(post.body);
 const { Content } = await post.render();
+const readingTime = getReadingTime(post.body);
 ---
 
 <ThoughtsLayout {...post.data} readingTime={readingTime}>
